@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="it" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I ViaggiaStorie | Pub Letterario & Birra Artigianale Soncino</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display for headers, Inter for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        pub: {
+                            dark: '#0f0c09',
+                            wood: '#1c1510',
+                            card: '#241b14',
+                            border: '#3d2e22',
+                            gold: '#dfaa52',
+                            goldLight: '#f4cb7a',
+                            parchment: '#e2d4be',
+                            foam: '#faf3e0',
+                            red: '#991b1b',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cinzel', 'Playfair Display', 'serif'],
+                        body: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0f0c09;
+            color: #e2d4be;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .bg-wood-texture {
+            background-image: radial-gradient(#241b14 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        .amber-glow {
+            box-shadow: 0 0 25px -5px rgba(223, 170, 82, 0.3);
+        }
+
+        .foam-top {
+            position: relative;
+        }
+        .foam-top::before {
+            content: "";
+            position: absolute;
+            top: -6px;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: radial-gradient(circle, #faf3e0 60%, transparent 70%);
+            background-size: 12px 12px;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0c09;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3d2e22;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #dfaa52;
+        }
+    </style>
+</head>
+<body class="bg-pub-dark text-pub-parchment antialiased min-h-screen flex flex-col justify-between selection:bg-pub-gold selection:text-pub-dark">
+
+    <!-- TOP ANNOUNCEMENT / STATUS BAR -->
+    <div id="pub-status-bar" class="bg-pub-wood border-b border-pub-border py-2 px-4 text-xs md:text-sm font-medium transition-colors duration-300">
+        <div class="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center gap-2">
+                <span class="relative flex h-3 w-3">
+                  <span id="status-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span id="status-dot" class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </span>
+                <span id="pub-status-text" class="text-emerald-400 font-semibold uppercase tracking-wider text-xs">Aperto Ora - ViaggiaStorie Soncino</span>
+                <span class="text-pub-border hidden md:inline">|</span>
+                <span class="hidden md:inline text-gray-400"><i data-lucide="clock" class="inline w-3.5 h-3.5 mr-1"></i> Orari: 18:00 - 01:30 (Chiuso il Martedì)</span>
+            </div>
+            
+            <div class="flex items-center gap-4 text-xs">
+                <div class="flex items-center gap-1.5 text-pub-gold">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                    <span>Borgo Sotto, Soncino (CR)</span>
+                </div>
+                <button onclick="togglePOSModal()" class="bg-pub-card hover:bg-pub-border border border-pub-gold/30 text-pub-gold px-2.5 py-1 rounded text-xs transition flex items-center gap-1">
+                    <i data-lucide="monitor" class="w-3 h-3"></i>
+                    <span class="hidden sm:inline">Pannello</span> POS Cameriere
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER & NAVIGATION -->
+    <header class="sticky top-0 z-40 bg-pub-dark/95 backdrop-blur-md border-b border-pub-border/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- BRAND / LOGO -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-pub-gold to-amber-700 p-0.5 flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                        <div class="w-full h-full bg-pub-dark rounded-full flex items-center justify-center text-pub-gold">
+                            <i data-lucide="book-open-check" class="w-6 h-6"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="font-serif text-xl sm:text-2xl font-bold tracking-wider text-pub-gold block leading-none">I VIAGGIASTORIE</span>
+                        <span class="text-[10px] sm:text-xs text-amber-200/60 tracking-widest uppercase">Pub Letterario & Birra Artigianale</span>
+                    </div>
+                </a>
+
+                <!-- DESKTOP NAV -->
+                <nav class="hidden md:flex items-center gap-8 font-serif text-sm tracking-wide">
+                    <a href="#spina" class="hover:text-pub-gold transition-colors flex items-center gap-1.5"><i data-lucide="beer" class="w-4 h-4"></i> Alla Spina</a>
+                    <a href="#menu" class="hover:text-pub-gold transition-colors flex items-center gap-1.5"><i data-lucide="utensils" class="w-4 h-4"></i> Menu</a>
+                    <a href="#eventi" class="hover:text-pub-gold transition-colors flex items-center gap-1.5"><i data-lucide="dices" class="w-4 h-4"></i> Eventi & GDR</a>
+                    <a href="#storie" class="hover:text-pub-gold transition-colors flex items-center gap-1.5"><i data-lucide="scroll" class="w-4 h-4"></i> Storie</a>
+                </nav>
+
+                <!-- TABLE SELECTION & CART -->
+                <div class="flex items-center gap-3">
+                    
+                    <!-- Table Selector Box -->
+                    <div class="bg-pub-wood border border-pub-gold/40 rounded-lg p-1.5 flex items-center gap-2">
+                        <i data-lucide="armchair" class="w-4 h-4 text-pub-gold ml-1"></i>
+                        <span class="text-xs font-medium text-gray-300 hidden sm:inline">Tavolo:</span>
+                        <select id="table-select" onchange="onTableChange()" class="bg-pub-card text-pub-gold border border-pub-border text-xs rounded px-2 py-1 focus:outline-none focus:border-pub-gold font-bold">
+                            <option value="">Non impostato</option>
+                            <option value="1">Tavolo 1 (Interno)</option>
+                            <option value="2">Tavolo 2 (Interno)</option>
+                            <option value="3">Tavolo 3 (Sala Lettura)</option>
+                            <option value="4">Tavolo 4 (Sala Lettura)</option>
+                            <option value="5">Tavolo 5 (Soppalco D&D)</option>
+                            <option value="6">Tavolo 6 (Dehor)</option>
+                            <option value="7">Tavolo 7 (Dehor)</option>
+                            <option value="8">Tavolo 8 (Banco Spina)</option>
+                        </select>
+                    </div>
+
+                    <!-- Cart Trigger Button -->
+                    <button onclick="toggleCartModal()" class="relative bg-pub-gold text-pub-dark font-bold p-2.5 rounded-lg hover:bg-pub-goldLight transition flex items-center justify-center shadow-lg">
+                        <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                        <span id="cart-badge" class="absolute -top-2 -right-2 bg-pub-red text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold border-2 border-pub-dark hidden">0</span>
+                    </button>
+                    
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative bg-wood-texture border-b border-pub-border py-16 lg:py-24 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-pub-dark via-transparent to-pub-dark/80"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            
+            <div class="inline-flex items-center gap-2 bg-pub-wood/80 border border-pub-gold/30 px-4 py-1.5 rounded-full text-xs font-medium text-pub-gold mb-6 backdrop-blur-sm">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                <span>Birre Artigianali Selezionate & Atmospere D&D a Soncino</span>
+            </div>
+            
+            <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight mb-6 leading-tight">
+                Dove la Buona Birra <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-pub-gold via-amber-400 to-amber-600">Incontra la Leggenda</span>
+            </h1>
+            
+            <p class="max-w-2xl mx-auto text-base sm:text-lg text-gray-300 mb-8 font-light">
+                Benvenuto a I ViaggiaStorie. Sfoglia il menu interattivo direttamente dal tuo tavolo, ordina le migliori birre alla spina o chiama il cameriere con un solo tocco.
+            </p>
+
+            <!-- Table Quick Setter CTA -->
+            <div id="hero-table-alert" class="max-w-md mx-auto bg-pub-card/90 border border-pub-gold/40 p-4 rounded-xl shadow-xl backdrop-blur-md">
+                <p class="text-xs text-gray-300 mb-3"><i data-lucide="info" class="inline w-4 h-4 text-pub-gold mr-1"></i> Per ordinare o chiamare il personale, inserisci il tuo numero di tavolo:</p>
+                <div class="flex gap-2">
+                    <input type="number" id="quick-table-input" min="1" max="20" placeholder="Es. 4" class="bg-pub-dark border border-pub-border rounded-lg px-3 py-2 text-sm text-center font-bold text-pub-gold w-full focus:outline-none focus:border-pub-gold">
+                    <button onclick="setQuickTable()" class="bg-pub-gold text-pub-dark font-bold px-5 py-2 rounded-lg text-sm hover:bg-pub-goldLight transition whitespace-nowrap">
+                        Conferma Tavolo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Table Confirmed Box (Hidden initially) -->
+            <div id="hero-table-active" class="hidden max-w-md mx-auto bg-emerald-950/60 border border-emerald-500/40 p-4 rounded-xl shadow-xl backdrop-blur-md">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-lg">
+                            <span id="active-table-num">1</span>
+                        </div>
+                        <div class="text-left">
+                            <h4 class="text-sm font-bold text-white">Sei al Tavolo <span id="active-table-num-text">1</span></h4>
+                            <p class="text-xs text-emerald-400">Pronto per ordinare o chiamare il servizio</p>
+                        </div>
+                    </div>
+                    <button onclick="resetTable()" class="text-xs text-gray-400 hover:text-white underline">Cambia</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 1: ALLA SPINA OGGI (TAP LIST DINAMICA) -->
+    <section id="spina" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+                <span class="text-pub-gold font-serif text-sm uppercase tracking-widest font-semibold">Selezione Artigianale</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">Le Spine del Mese</h2>
+            </div>
+            <p class="text-xs text-gray-400 mt-2 md:mt-0 flex items-center gap-1">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-pub-gold"></i> Fusti aggiornati in tempo reale dalla cantina
+            </p>
+        </div>
+
+        <!-- Tap Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="tap-list-container">
+            <!-- Dynamic Content loaded via JS -->
+        </div>
+    </section>
+
+    <!-- SECTION 2: MENU CIBO & STUZZICHERIA -->
+    <section id="menu" class="py-16 bg-pub-wood/60 border-y border-pub-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-pub-gold font-serif text-sm uppercase tracking-widest font-semibold">Cucina & Taglieri</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">Accompagna la tua Pinta</h2>
+                <p class="text-gray-400 text-sm mt-2">Dalle focacce farcite ai taglieri del viandante, preparati con ingredienti locali e ricette del territorio.</p>
+            </div>
+
+            <!-- Categories selector -->
+            <div class="flex justify-center gap-2 mb-8 overflow-x-auto pb-2" id="menu-categories">
+                <button onclick="filterMenu('all')" class="menu-cat-btn active bg-pub-gold text-pub-dark font-semibold px-4 py-2 rounded-full text-xs transition whitespace-nowrap">Tutti</button>
+                <button onclick="filterMenu('burger')" class="menu-cat-btn bg-pub-card text-gray-300 hover:text-pub-gold border border-pub-border px-4 py-2 rounded-full text-xs transition whitespace-nowrap">Hamburger & Panini</button>
+                <button onclick="filterMenu('taglieri')" class="menu-cat-btn bg-pub-card text-gray-300 hover:text-pub-gold border border-pub-border px-4 py-2 rounded-full text-xs transition whitespace-nowrap">Taglieri del Viandante</button>
+                <button onclick="filterMenu('sfizi')" class="menu-cat-btn bg-pub-card text-gray-300 hover:text-pub-gold border border-pub-border px-4 py-2 rounded-full text-xs transition whitespace-nowrap">Sfizi & Fritti</button>
+                <button onclick="filterMenu('dolci')" class="menu-cat-btn bg-pub-card text-gray-300 hover:text-pub-gold border border-pub-border px-4 py-2 rounded-full text-xs transition whitespace-nowrap">Dolci</button>
+            </div>
+
+            <!-- Food Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="food-menu-container">
+                <!-- Dynamic Content loaded via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: EVENTI, SERATE D&D & CONCERTI -->
+    <section id="eventi" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+                <span class="text-pub-gold font-serif text-sm uppercase tracking-widest font-semibold">Calendario delle Serate</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-1">Eventi, GDR & Musica</h2>
+            </div>
+            <p class="text-sm text-gray-400 mt-2 md:mt-0">Prenota un tavolo in anticipo per i tavoli da gioco!</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Event Card 1 -->
+            <div class="bg-pub-card border border-pub-border rounded-xl p-6 relative flex flex-col justify-between hover:border-pub-gold/50 transition">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[11px] font-bold px-3 py-1 rounded-full uppercase">Ogni Giovedì</span>
+                        <i data-lucide="dices" class="w-6 h-6 text-pub-gold"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-white mb-2">Serata D&D e Giochi da Tavolo</h3>
+                    <p class="text-sm text-gray-300 mb-4 font-light">Unisciti ai nostri Master o porta la tua compagnia! Tavoli riservati con mappe tattili e birre speciali in promozione per gli avventurieri.</p>
+                </div>
+                <div class="pt-4 border-t border-pub-border/60 flex items-center justify-between text-xs text-gray-400">
+                    <span><i data-lucide="clock" class="inline w-3.5 h-3.5 mr-1"></i> Dalle 20:30</span>
+                    <button onclick="quickAlert('Per prenotare un tavolo da gioco chiama il locale o invia una richiesta tramite il pulsante Cameriere!')" class="text-pub-gold hover:underline font-semibold">Info & Tavoli</button>
+                </div>
+            </div>
+
+            <!-- Event Card 2 -->
+            <div class="bg-pub-card border border-pub-border rounded-xl p-6 relative flex flex-col justify-between hover:border-pub-gold/50 transition">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold px-3 py-1 rounded-full uppercase">Venerdì 24 Ottobre</span>
+                        <i data-lucide="music" class="w-6 h-6 text-pub-gold"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-white mb-2">Live Session: Folk Acoustic Night</h3>
+                    <p class="text-sm text-gray-300 mb-4 font-light">Musica folk tradizionale e ballate d'altri tempi eseguite dal vivo con liuto, violino e chitarra acustica.</p>
+                </div>
+                <div class="pt-4 border-t border-pub-border/60 flex items-center justify-between text-xs text-gray-400">
+                    <span><i data-lucide="clock" class="inline w-3.5 h-3.5 mr-1"></i> Dalle 21:30</span>
+                    <button onclick="quickAlert('Ingresso libero. Si consiglia la prenotazione del tavolo per la cena!')" class="text-pub-gold hover:underline font-semibold">Dettagli</button>
+                </div>
+            </div>
+
+            <!-- Event Card 3 -->
+            <div class="bg-pub-card border border-pub-border rounded-xl p-6 relative flex flex-col justify-between hover:border-pub-gold/50 transition">
+                <div>
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="bg-purple-500/10 text-purple-400 border border-purple-500/30 text-[11px] font-bold px-3 py-1 rounded-full uppercase">Domenica 26 Ottobre</span>
+                        <i data-lucide="book-open" class="w-6 h-6 text-pub-gold"></i>
+                    </div>
+                    <h3 class="font-serif text-xl font-bold text-white mb-2">Book Club & Birra: "Storie del Nord"</h3>
+                    <p class="text-sm text-gray-300 mb-4 font-light">Incontro del club del libro con degustazione guidata di birre in stile Baltic Porter e Stout abbinate a letture di narrativa fantasy e storica.</p>
+                </div>
+                <div class="pt-4 border-t border-pub-border/60 flex items-center justify-between text-xs text-gray-400">
+                    <span><i data-lucide="clock" class="inline w-3.5 h-3.5 mr-1"></i> Dalle 18:30</span>
+                    <button onclick="quickAlert('Partecipazione gratuita previa iscrizione al banco!')" class="text-pub-gold hover:underline font-semibold">Partecipa</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 4: STORIE ALLA SPINA (REELS / PODCAST) -->
+    <section id="storie" class="py-16 bg-pub-wood border-t border-pub-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-pub-gold font-serif text-sm uppercase tracking-widest font-semibold">Format Multimediale</span>
+                    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-white mt-1 mb-4">Storie alla Spina</h2>
+                    <p class="text-gray-300 mb-6 leading-relaxed font-light">
+                        Ogni settimana vi raccontiamo l'origine delle birre che serviamo, spunti letterari, recensioni di giochi di ruolo e leggende locali di Soncino.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4 p-3 bg-pub-card/60 rounded-lg border border-pub-border">
+                            <div class="p-2 bg-pub-gold/10 text-pub-gold rounded-lg">
+                                <i data-lucide="mic" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Estratto Audio: La leggenda della Stella Polare</h4>
+                                <p class="text-xs text-gray-400">Durata: 2:45 min | Narrato da Matteo</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4 p-3 bg-pub-card/60 rounded-lg border border-pub-border">
+                            <div class="p-2 bg-pub-gold/10 text-pub-gold rounded-lg">
+                                <i data-lucide="instagram" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white">Seguici su Instagram @iviaggiastorie</h4>
+                                <p class="text-xs text-gray-400">Guarda i Reel quotidiani dietro al banco delle spine</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Media Player Box -->
+                <div class="bg-pub-card border border-pub-gold/30 rounded-2xl p-6 shadow-2xl relative">
+                    <div class="aspect-video bg-pub-dark rounded-xl flex flex-col items-center justify-center relative overflow-hidden border border-pub-border">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/30"></div>
+                        <i data-lucide="volume-2" class="w-12 h-12 text-pub-gold animate-bounce mb-2 z-10"></i>
+                        <span class="z-10 font-serif text-lg text-white font-bold">Storie alla Spina - Ep. 14</span>
+                        <span class="z-10 text-xs text-amber-300/80">"Perché la Saison si beveva nei campi?"</span>
+                        
+                        <!-- Player Bar Simulation -->
+                        <div class="absolute bottom-4 left-4 right-4 z-10 bg-pub-wood/80 backdrop-blur-md p-3 rounded-lg border border-pub-border flex items-center gap-3">
+                            <button id="play-btn" onclick="toggleAudioMock()" class="w-8 h-8 rounded-full bg-pub-gold text-pub-dark flex items-center justify-center font-bold">
+                                <i data-lucide="play" id="play-icon" class="w-4 h-4"></i>
+                            </button>
+                            <div class="flex-1">
+                                <div class="h-1.5 bg-pub-dark rounded-full overflow-hidden">
+                                    <div id="audio-progress" class="h-full bg-pub-gold w-1/3 transition-all duration-300"></div>
+                                </div>
+                            </div>
+                            <span class="text-[10px] text-gray-400" id="audio-time">0:45 / 2:30</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-pub-dark border-t border-pub-border py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+                <div>
+                    <h3 class="font-serif text-lg font-bold text-pub-gold mb-3">I ViaggiaStorie</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Birreria artigianale, pub letterario e punto di ritrovo per appassionati di giochi da tavolo e avventure a Soncino.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-serif text-sm font-bold text-white mb-3">Contatti e Posizione</h4>
+                    <p class="text-xs text-gray-400 mb-1"><i data-lucide="map-pin" class="inline w-3 h-3 text-pub-gold mr-1"></i> Via Borgo Sotto, Soncino (CR)</p>
+                    <p class="text-xs text-gray-400 mb-1"><i data-lucide="phone" class="inline w-3 h-3 text-pub-gold mr-1"></i> +39 0374 123456</p>
+                    <p class="text-xs text-gray-400"><i data-lucide="mail" class="inline w-3 h-3 text-pub-gold mr-1"></i> info@iviaggiastorie.it</p>
+                </div>
+                <div>
+                    <h4 class="font-serif text-sm font-bold text-white mb-3">Orari di Apertura</h4>
+                    <p class="text-xs text-gray-400">Mercoledì - Lunedì: 18:00 - 01:30</p>
+                    <p class="text-xs text-pub-gold mt-1">Martedì: Giorno di Chiusura</p>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-pub-border/50 text-center text-[11px] text-gray-500">
+                <p>&copy; 2026 I ViaggiaStorie - Soncino. Tutti i diritti riservati. Gestione comande integrata.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- FLOATING ACTION BUTTONS (WAITER & BILL CALLER) -->
+    <div class="fixed bottom-6 right-6 z-40 flex flex-col gap-3">
+        
+        <!-- Call Waiter Button -->
+        <button onclick="sendWaiterSignal('call')" class="group relative bg-amber-600 hover:bg-amber-500 text-white font-bold p-3.5 sm:px-5 sm:py-3 rounded-full shadow-2xl transition-all duration-300 flex items-center gap-2 border border-pub-gold/50 amber-glow hover:scale-105">
+            <i data-lucide="bell" class="w-5 h-5 animate-bounce"></i>
+            <span class="hidden sm:inline text-xs font-semibold">Chiama Cameriere</span>
+        </button>
+
+        <!-- Request Bill Button -->
+        <button onclick="sendWaiterSignal('bill')" class="group relative bg-pub-card hover:bg-pub-border text-pub-gold font-bold p-3.5 sm:px-5 sm:py-3 rounded-full shadow-2xl transition-all duration-300 flex items-center gap-2 border border-pub-gold/40 hover:scale-105">
+            <i data-lucide="receipt" class="w-5 h-5"></i>
+            <span class="hidden sm:inline text-xs font-semibold">Richiedi Conto</span>
+        </button>
+
+    </div>
+
+    <!-- CART MODAL -->
+    <div id="cart-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-end hidden">
+        <div class="w-full max-w-md bg-pub-dark border-l border-pub-border h-full flex flex-col justify-between p-6 overflow-y-auto">
+            <div>
+                <div class="flex items-center justify-between pb-4 border-b border-pub-border">
+                    <h3 class="font-serif text-xl font-bold text-pub-gold flex items-center gap-2">
+                        <i data-lucide="shopping-bag" class="w-5 h-5"></i> La tua Comanda
+                    </h3>
+                    <button onclick="toggleCartModal()" class="text-gray-400 hover:text-white">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+
+                <div id="cart-table-info" class="my-4 p-3 bg-pub-wood border border-pub-border rounded-lg text-xs flex justify-between items-center">
+                    <span class="text-gray-300">Tavolo selezionato:</span>
+                    <span id="cart-table-display" class="font-bold text-pub-gold">Nessuno (Seleziona)</span>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cart-items" class="space-y-3 my-4">
+                    <!-- Dynamic Cart Items -->
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-pub-border">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-gray-400 text-sm">Totale Comanda:</span>
+                    <span id="cart-total" class="font-serif text-2xl font-bold text-pub-gold">€ 0.00</span>
+                </div>
+                <button onclick="submitOrder()" class="w-full bg-pub-gold hover:bg-pub-goldLight text-pub-dark font-bold py-3 rounded-lg text-sm transition flex items-center justify-center gap-2">
+                    <i data-lucide="send" class="w-4 h-4"></i> Invia Comanda in Cucina/Banco
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WAITER / KITCHEN POS PANEL MODAL (SIMULATED API SERVER) -->
+    <div id="pos-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 hidden">
+        <div class="bg-pub-wood border border-pub-gold/50 rounded-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
+            <!-- POS Header -->
+            <div class="bg-pub-dark px-6 py-4 border-b border-pub-border flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <div>
+                        <h3 class="font-serif font-bold text-white text-lg">Pannello Gestione Comande & Tavoli</h3>
+                        <p class="text-xs text-gray-400">API Endpoint Simulato: <code class="text-pub-gold text-[10px]">https://comande.iviaggiastorie.it/api/v1</code></p>
+                    </div>
+                </div>
+                <button onclick="togglePOSModal()" class="text-gray-400 hover:text-white">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+
+            <!-- POS Body Grid -->
+            <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-6 overflow-y-auto">
+                
+                <!-- Calls & Alerts Log Column -->
+                <div class="md:col-span-1 bg-pub-card p-4 rounded-xl border border-pub-border flex flex-col justify-between">
+                    <div>
+                        <h4 class="font-serif text-sm font-bold text-pub-gold mb-3 flex items-center gap-1.5">
+                            <i data-lucide="bell" class="w-4 h-4"></i> Chiamate in Tempo Reale
+                        </h4>
+                        <div id="pos-notifications" class="space-y-2 max-h-80 overflow-y-auto pr-1">
+                            <p class="text-xs text-gray-500 italic">In attesa di chiamate dai tavoli...</p>
+                        </div>
+                    </div>
+                    <button onclick="clearPOSLogs()" class="mt-4 text-[11px] text-gray-400 hover:text-pub-gold underline text-left">
+                        Pulisci storico notifiche
+                    </button>
+                </div>
+
+                <!-- Active Orders Column -->
+                <div class="md:col-span-2 bg-pub-card p-4 rounded-xl border border-pub-border">
+                    <h4 class="font-serif text-sm font-bold text-pub-gold mb-3 flex items-center gap-1.5">
+                        <i data-lucide="clipboard-list" class="w-4 h-4"></i> Ordini Ricevuti
+                    </h4>
+                    <div id="pos-orders-list" class="space-y-3 max-h-96 overflow-y-auto pr-1">
+                        <p class="text-xs text-gray-500 italic">Nessuna comanda attiva al momento.</p>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- POS Footer -->
+            <div class="bg-pub-dark px-6 py-3 border-t border-pub-border text-xs text-gray-400 flex justify-between items-center">
+                <span>Stato Server WebSocket: <strong class="text-emerald-400">CONNESSO</strong></span>
+                <span>I ViaggiaStorie POS v2.4</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SYSTEM NOTIFICATION TOAST -->
+    <div id="toast" class="fixed top-24 right-6 z-50 transform translate-x-full transition-transform duration-300 ease-in-out bg-pub-card border border-pub-gold p-4 rounded-xl shadow-2xl max-w-sm flex items-start gap-3">
+        <div id="toast-icon" class="text-pub-gold pt-0.5">
+            <i data-lucide="info" class="w-5 h-5"></i>
+        </div>
+        <div>
+            <h5 id="toast-title" class="font-bold text-white text-sm">Notifica</h5>
+            <p id="toast-message" class="text-xs text-gray-300 mt-0.5">Messaggio di sistema</p>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // DATA SOURCES
+        const beersData = [
+            {
+                id: 'b1',
+                name: 'Stella Polare',
+                style: 'Pilsner Artigianale',
+                abv: '4.8%',
+                ibu: 28,
+                price: 5.50,
+                desc: 'Chiara, fresca, con note erbacee di luppoli nobili europei e un finale secco e dissetante.',
+                kegLevel: 85,
+                color: 'from-amber-400 to-yellow-600'
+            },
+            {
+                id: 'b2',
+                name: 'Nebbia del Borgo',
+                style: 'Hazy IPA',
+                abv: '6.2%',
+                ibu: 45,
+                price: 6.50,
+                desc: 'Esplosione di frutta tropicale, mango e agrumi. Corporea, torbida e piacevolmente luppolata.',
+                kegLevel: 40,
+                color: 'from-amber-500 to-orange-600'
+            },
+            {
+                id: 'b3',
+                name: 'Inchiostro Notturno',
+                style: 'Imperial Stout',
+                abv: '8.5%',
+                ibu: 55,
+                price: 7.00,
+                desc: 'Scura e avvolgente come una notte di racconto. Sentori intensi di cacao amaro, caffè e malto tostato.',
+                kegLevel: 65,
+                color: 'from-yellow-900 to-stone-900'
+            },
+            {
+                id: 'b4',
+                name: 'La Dama Bianca',
+                style: 'Witbier / Blanche',
+                abv: '5.0%',
+                ibu: 15,
+                price: 6.00,
+                desc: 'Birra di frumento speziata con scorza d\'arancia amara e coriandolo. Seta al palato.',
+                kegLevel: 15, // Low stock warning
+                color: 'from-amber-200 to-amber-400'
+            }
+        ];
+
+        const foodData = [
+            {
+                id: 'f1',
+                category: 'burger',
+                name: 'Hamburger de Il Viandante',
+                price: 12.50,
+                desc: '200g Manzo selezionato, formaggio Salva Cremasco DOP, pancetta croccante e salsa speciale della casa.'
+            },
+            {
+                id: 'f2',
+                category: 'taglieri',
+                name: 'Tagliere delle Storie (x2 persone)',
+                price: 18.00,
+                desc: 'Selezione di salumi tipici cremonesi, formaggi locali di cascina, miele di castagno e crostini caldi.'
+            },
+            {
+                id: 'f3',
+                category: 'sfizi',
+                name: 'Patate al Forno Speziate',
+                price: 5.00,
+                desc: 'Patate a spicchi con buccia, paprika dolce, rosmarino e maionese all\'aglio fatta in casa.'
+            },
+            {
+                id: 'f4',
+                category: 'burger',
+                name: 'Panino "Il Bardic"',
+                price: 11.00,
+                desc: 'Pulled Pork sfilacciato a lenta cottura nel sidro, insalata coleslaw e salsa BBQ affumicata.'
+            },
+            {
+                id: 'f5',
+                category: 'sfizi',
+                name: 'Anelli di Cipolla alla Birra',
+                price: 6.00,
+                desc: 'Cipolle bionde pastellate nella nostra Pilsner Stella Polare e fritte dorate.'
+            },
+            {
+                id: 'f6',
+                category: 'dolci',
+                name: 'Birramisù della Casa',
+                price: 5.50,
+                desc: 'Tiramisù artigianale rivisitato con biscotti savoiardi inzuppati nella nostra Stout inchiostro Notturno.'
+            }
+        ];
+
+        // GLOBAL APP STATE
+        let selectedTable = '';
+        let cart = [];
+        let posNotifications = [];
+        let posOrders = [];
+        let isAudioPlaying = false;
+
+        // INITIALIZATION
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            renderTapList();
+            renderFoodMenu('all');
+            updateCartUI();
+        });
+
+        // RENDER TAP LIST
+        function renderTapList() {
+            const container = document.getElementById('tap-list-container');
+            container.innerHTML = beersData.map(beer => `
+                <div class="bg-pub-card border border-pub-border rounded-xl p-5 relative flex flex-col justify-between hover:border-pub-gold/50 transition shadow-lg group">
+                    <div>
+                        <!-- Beer Header -->
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-[11px] font-bold text-pub-gold uppercase tracking-wider bg-pub-wood px-2.5 py-1 rounded border border-pub-border">${beer.style}</span>
+                            <span class="text-xs font-semibold text-gray-400">ABV ${beer.abv}</span>
+                        </div>
+                        
+                        <h3 class="font-serif text-xl font-bold text-white group-hover:text-pub-gold transition mb-1">${beer.name}</h3>
+                        <p class="text-xs text-gray-400 mb-4 line-clamp-3 font-light">${beer.desc}</p>
+                        
+                        <!-- Keg Level Bar -->
+                        <div class="mb-4">
+                            <div class="flex justify-between text-[10px] text-gray-400 mb-1">
+                                <span>Disponibilità fusto</span>
+                                <span class="${beer.kegLevel < 20 ? 'text-red-400 font-bold' : 'text-gray-300'}">${beer.kegLevel}%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-pub-dark rounded-full overflow-hidden">
+                                <div class="h-full bg-gradient-to-r ${beer.color}" style="width: ${beer.kegLevel}%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price & Order Action -->
+                    <div class="pt-3 border-t border-pub-border flex items-center justify-between">
+                        <span class="font-serif font-bold text-lg text-pub-gold">€ ${beer.price.toFixed(2)}</span>
+                        <button onclick="addToCart('${beer.id}', 'beer')" class="bg-pub-wood hover:bg-pub-gold hover:text-pub-dark text-pub-gold border border-pub-gold/40 text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Ordina
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // RENDER FOOD MENU
+        function renderFoodMenu(category) {
+            const container = document.getElementById('food-menu-container');
+            const filtered = category === 'all' ? foodData : foodData.filter(item => item.category === category);
+            
+            container.innerHTML = filtered.map(item => `
+                <div class="bg-pub-dark border border-pub-border rounded-xl p-5 flex flex-col justify-between hover:border-pub-gold/40 transition">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="font-serif font-bold text-white text-base">${item.name}</h4>
+                            <span class="font-serif font-bold text-pub-gold text-sm whitespace-nowrap">€ ${item.price.toFixed(2)}</span>
+                        </div>
+                        <p class="text-xs text-gray-400 mb-4 font-light">${item.desc}</p>
+                    </div>
+                    <button onclick="addToCart('${item.id}', 'food')" class="w-full bg-pub-card hover:bg-pub-border text-gray-200 border border-pub-border text-xs font-semibold py-2 rounded-lg transition flex items-center justify-center gap-1">
+                        <i data-lucide="plus" class="w-3.5 h-3.5 text-pub-gold"></i> Aggiungi alla comanda
+                    </button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // FILTER MENU CATEGORIES
+        function filterMenu(category) {
+            document.querySelectorAll('.menu-cat-btn').forEach(btn => {
+                btn.classList.remove('bg-pub-gold', 'text-pub-dark');
+                btn.classList.add('bg-pub-card', 'text-gray-300');
+            });
+            event.target.classList.remove('bg-pub-card', 'text-gray-300');
+            event.target.classList.add('bg-pub-gold', 'text-pub-dark');
+            renderFoodMenu(category);
+        }
+
+        // TABLE LOGIC
+        function onTableChange() {
+            const select = document.getElementById('table-select');
+            selectedTable = select.value;
+            updateTableState();
+        }
+
+        function setQuickTable() {
+            const input = document.getElementById('quick-table-input');
+            if (input.value && input.value > 0) {
+                selectedTable = input.value;
+                document.getElementById('table-select').value = input.value;
+                updateTableState();
+                showToast('Tavolo Impostato', `Ora puoi inviare comande dal Tavolo ${selectedTable}`);
+            } else {
+                showToast('Attenzione', 'Inserisci un numero di tavolo valido', 'warning');
+            }
+        }
+
+        function resetTable() {
+            selectedTable = '';
+            document.getElementById('table-select').value = '';
+            updateTableState();
+        }
+
+        function updateTableState() {
+            const alertBox = document.getElementById('hero-table-alert');
+            const activeBox = document.getElementById('hero-table-active');
+            const cartTableDisplay = document.getElementById('cart-table-display');
+
+            if (selectedTable) {
+                alertBox.classList.add('hidden');
+                activeBox.classList.remove('hidden');
+                document.getElementById('active-table-num').innerText = selectedTable;
+                document.getElementById('active-table-num-text').innerText = selectedTable;
+                cartTableDisplay.innerText = `Tavolo ${selectedTable}`;
+                cartTableDisplay.classList.add('text-pub-gold');
+            } else {
+                alertBox.classList.remove('hidden');
+                activeBox.classList.add('hidden');
+                cartTableDisplay.innerText = 'Nessuno (Seleziona)';
+                cartTableDisplay.classList.remove('text-pub-gold');
+            }
+        }
+
+        // CART LOGIC
+        function addToCart(itemId, type) {
+            const item = type === 'beer' ? beersData.find(b => b.id === itemId) : foodData.find(f => f.id === itemId);
+            const existing = cart.find(c => c.id === itemId);
+
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+
+            updateCartUI();
+            showToast('Aggiunto alla comanda', `${item.name} aggiunto con successo.`);
+        }
+
+        function updateCartQty(itemId, delta) {
+            const item = cart.find(c => c.id === itemId);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) {
+                    cart = cart.filter(c => c.id !== itemId);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const badge = document.getElementById('cart-badge');
+            const itemsContainer = document.getElementById('cart-items');
+            const totalDisplay = document.getElementById('cart-total');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            if (totalItems > 0) {
+                badge.innerText = totalItems;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = `<p class="text-xs text-gray-500 italic text-center py-8">La tua comanda è ancora vuota.</p>`;
+            } else {
+                itemsContainer.innerHTML = cart.map(item => `
+                    <div class="flex items-center justify-between bg-pub-wood p-3 rounded-lg border border-pub-border">
+                        <div>
+                            <h5 class="text-xs font-bold text-white">${item.name}</h5>
+                            <span class="text-[11px] text-pub-gold">€ ${(item.price * item.qty).toFixed(2)}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="updateCartQty('${item.id}', -1)" class="w-6 h-6 bg-pub-dark rounded text-xs text-gray-300 hover:text-white">-</button>
+                            <span class="text-xs font-bold px-1 text-white">${item.qty}</span>
+                            <button onclick="updateCartQty('${item.id}', 1)" class="w-6 h-6 bg-pub-dark rounded text-xs text-gray-300 hover:text-white">+</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            totalDisplay.innerText = `€ ${totalPrice.toFixed(2)}`;
+        }
+
+        function toggleCartModal() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function submitOrder() {
+            if (!selectedTable) {
+                showToast('Seleziona Tavolo', 'Devi specificare il numero di tavolo prima di inviare l\'ordine.', 'warning');
+                return;
+            }
+
+            if (cart.length === 0) {
+                showToast('Comanda Vuota', 'Aggiungi almeno un elemento al carrello.', 'warning');
+                return;
+            }
+
+            const orderData = {
+                id: 'ORD-' + Math.floor(1000 + Math.random() * 9000),
+                table: selectedTable,
+                items: [...cart],
+                total: cart.reduce((sum, item) => sum + (item.price * item.qty), 0),
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+
+            // SIMULATED FETCH/WEBSOCKET API CALL TO WEBSOCKET OR SERVER
+            console.log("POST Request to https://comande.iviaggiastorie.it/api/order", orderData);
+            
+            // Push to POS simulator
+            posOrders.unshift(orderData);
+            renderPOSOrders();
+            
+            // Reset local cart
+            cart = [];
+            updateCartUI();
+            toggleCartModal();
+
+            showToast('Comanda Inviata!', `La comanda per il Tavolo ${selectedTable} è stata ricevuta dal banco.`);
+        }
+
+        // WAITER / BILL CALLER SIGNALING LOGIC
+        function sendWaiterSignal(type) {
+            if (!selectedTable) {
+                showToast('Tavolo non impostato', 'Seleziona il tuo numero di tavolo in alto o nella pagina.', 'warning');
+                return;
+            }
+
+            const isCall = type === 'call';
+            const actionText = isCall ? 'Chiamata Cameriere' : 'Richiesta Conto';
+            const message = isCall ? `Il Tavolo ${selectedTable} richiede assistenza.` : `Il Tavolo ${selectedTable} chiede il conto.`;
+
+            const notification = {
+                id: Date.now(),
+                table: selectedTable,
+                type: type,
+                text: actionText,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+
+            // SIMULATED WEBSOCKET EMIT
+            console.log("WebSocket Emit to Pub Server:", notification);
+            
+            // Add to POS
+            posNotifications.unshift(notification);
+            renderPOSNotifications();
+
+            showToast(actionText + ' Inviata', `Segnale inviato con successo dal Tavolo ${selectedTable}. Un cameriere arriverà a breve!`);
+        }
+
+        // POS CONTROL PANEL MODAL LOGIC
+        function togglePOSModal() {
+            const modal = document.getElementById('pos-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function renderPOSNotifications() {
+            const container = document.getElementById('pos-notifications');
+            if (posNotifications.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-500 italic">In attesa di chiamate dai tavoli...</p>`;
+                return;
+            }
+
+            container.innerHTML = posNotifications.map(n => `
+                <div class="p-2.5 rounded-lg text-xs border ${n.type === 'call' ? 'bg-amber-950/40 border-amber-500/40 text-amber-200' : 'bg-blue-950/40 border-blue-500/40 text-blue-200'} flex justify-between items-center animate-pulse">
+                    <div>
+                        <strong class="font-bold">Tavolo ${n.table}</strong>: ${n.text}
+                    </div>
+                    <span class="text-[10px] text-gray-400">${n.time}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderPOSOrders() {
+            const container = document.getElementById('pos-orders-list');
+            if (posOrders.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-500 italic">Nessuna comanda attiva al momento.</p>`;
+                return;
+            }
+
+            container.innerHTML = posOrders.map(o => `
+                <div class="p-3 bg-pub-dark border border-pub-border rounded-lg">
+                    <div class="flex justify-between items-center mb-2 pb-2 border-b border-pub-border">
+                        <span class="font-bold text-pub-gold text-xs">Tavolo ${o.table} <span class="text-gray-400 font-normal">(${o.id})</span></span>
+                        <span class="text-[10px] text-gray-400">${o.time}</span>
+                    </div>
+                    <ul class="text-xs space-y-1 text-gray-300 mb-2">
+                        ${o.items.map(i => `<li class="flex justify-between"><span>${i.qty}x ${i.name}</span> <span>€ ${(i.price * i.qty).toFixed(2)}</span></li>`).join('')}
+                    </ul>
+                    <div class="flex justify-between items-center pt-2 border-t border-pub-border/40 text-xs">
+                        <strong class="text-white">Totale: € ${o.total.toFixed(2)}</strong>
+                        <button onclick="completeOrder('${o.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] px-2 py-1 rounded">Segna Servito</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function completeOrder(orderId) {
+            posOrders = posOrders.filter(o => o.id !== orderId);
+            renderPOSOrders();
+        }
+
+        function clearPOSLogs() {
+            posNotifications = [];
+            renderPOSNotifications();
+        }
+
+        // MOCK AUDIO PLAYER
+        function toggleAudioMock() {
+            const playIcon = document.getElementById('play-icon');
+            const progressBar = document.getElementById('audio-progress');
+            
+            isAudioPlaying = !isAudioPlaying;
+
+            if (isAudioPlaying) {
+                playIcon.setAttribute('data-lucide', 'pause');
+                progressBar.style.width = '75%';
+                showToast('Riproduzione Avviata', 'Storie alla Spina Ep. 14 in riproduzione');
+            } else {
+                playIcon.setAttribute('data-lucide', 'play');
+                progressBar.style.width = '33%';
+            }
+            lucide.createIcons();
+        }
+
+        // GENERAL UTILS: TOAST NOTIFICATIONS
+        function showToast(title, message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastTitle = document.getElementById('toast-title');
+            const toastMessage = document.getElementById('toast-message');
+
+            toastTitle.innerText = title;
+            toastMessage.innerText = message;
+
+            toast.classList.remove('translate-x-full');
+
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+            }, 3500);
+        }
+
+        function quickAlert(msg) {
+            showToast('Informazione', msg);
+        }
+    </script>
+</body>
+</html>
